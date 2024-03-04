@@ -5,67 +5,31 @@ using System.Collections.Generic;
 
 public class ButtonManager : MonoBehaviour
 {
-    // Ссылка на единственный экземпляр для удобного доступа
-    public static ButtonManager instance;
-    // Создал словарь со всеми кнопками для удобства
-    private Dictionary<string, Button> namedButtons = new Dictionary<string, Button>();
+    [SerializeField] private GameObject homeButton;
+    [SerializeField] private GameObject mainScreen;
+    [SerializeField] private GameObject secondScreen;
+    [SerializeField] private GameObject censorship;
 
-    private void Awake()
+    public void StartButton()
     {
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
-            Destroy(gameObject);
-        
-        // Заполнение словаря именованных кнопок
-        PopulateButtonDictionary();
-
+        homeButton.SetActive(true);
+        mainScreen.SetActive(false);
+        censorship.SetActive(false);
+        secondScreen.SetActive(true);
+    }
+    public void FrontTriangle()
+    {
+        homeButton.SetActive(true);
+        mainScreen.SetActive(false);
+        censorship.SetActive(true);
+        secondScreen.SetActive(false);
     }
 
-    private void Start()
+    public void Home()
     {
-        // рефакторинг \/
-        DisableButton("HomeButton");
-        DisableButton("FrontTriangleButton");
-        DisableButton("LetterPathButton");
-        DisableButton("CensorshipButton");
-        DisableButton("MemoryButton");
-    }
-
-    private void PopulateButtonDictionary()
-    {
-        // Нахождение всех кнопок на сцене и добавление их в словарь с их именами
-        Button[] foundButtons = GameObject.FindObjectsOfType<Button>();
-        foreach (Button button in foundButtons)
-        {
-            // У каждой кнопки уникальное имя
-            namedButtons.Add(button.name, button);
-        }
-    }
-
-    // Деактивируем кнопку
-    public void DisableButton(string buttonName)
-    {
-        if (namedButtons.ContainsKey(buttonName))
-        {
-            namedButtons[buttonName].gameObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning("Кнопка с именем " + buttonName + " не найдена.");
-        }
-    }
-
-    // Активируем кнопку
-    public void EnableButton(string buttonName)
-    {
-        if (namedButtons.ContainsKey(buttonName))
-        {
-            namedButtons[buttonName].gameObject.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning("Кнопка с именем " + buttonName + " не найдена.");
-        }
+        homeButton.SetActive(false);
+        mainScreen.SetActive(true);
+        censorship.SetActive(false);
+        secondScreen.SetActive(false);
     }
 }
