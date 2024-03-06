@@ -12,37 +12,47 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private GameObject frontTriangle;
     [SerializeField] private GameObject letterPath;
     [SerializeField] private GameObject memory;
+    [SerializeField] private GameObject navigationButton;
+    // Remake this \/
+    [SerializeField] private GameObject storyFirst;
+    [SerializeField] private GameObject storySecond;
+    [SerializeField] private GameObject storyThird;
 
     public void StartButton()
     {
-        SetActiveObjects(true, false, true, false, false, false, false);
+        SetActiveObjects(true, false, true, false, false, false, false, false);
     }
 
     public void Censorship()
     {
-        SetActiveObjects(true, false, false, true, false, false, false);
+        SetActiveObjects(true, false, false, true, false, false, false, false);
     }
 
     public void FrontTriangle()
     {
-        SetActiveObjects(true, false, false, false, true, false, false);
+        SetActiveObjects(true, false, false, false, true, false, false, false);
     }
 
     public void Memory()
     {
-        SetActiveObjects(true, false, false, false, false, false, true);
+        SetActiveObjects(true, false, false, false, false, false, true, false);
     }
 
     public void LetterPath()
     {
-        SetActiveObjects(true, false, false, false, false, true, false);
+        SetActiveObjects(true, false, false, false, false, true, false, false);
     }
 
     public void Home()
     {
-        SetActiveObjects(false, true, false, false, false, false, false);
+        SetActiveObjects(false, true, false, false, false, false, false, false);
     }
-    private void SetActiveObjects(bool homeButtonActive, bool mainScreenActive, bool secondScreenActive, bool censorshipActive, bool frontTriangleActive, bool letterPathActive, bool memoryActive)
+
+    public void Story()
+    {
+        SetActiveObjects(true, false, false, false, false, false, false, true);
+    }
+    private void SetActiveObjects(bool homeButtonActive, bool mainScreenActive, bool secondScreenActive, bool censorshipActive, bool frontTriangleActive, bool letterPathActive, bool memoryActive, bool storyActive)
     {
         homeButton.SetActive(homeButtonActive);
         mainScreen.SetActive(mainScreenActive);
@@ -51,6 +61,7 @@ public class ButtonManager : MonoBehaviour
         frontTriangle.SetActive(frontTriangleActive);
         letterPath.SetActive(letterPathActive);
         memory.SetActive(memoryActive);
+        storyFirst.SetActive(storyActive);
     }
     
 }
