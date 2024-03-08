@@ -7,6 +7,7 @@ public class MoveInformationPanel : MonoBehaviour
     private int currentIndex = 0;
     private float moveDuration = 1.5f;
     private bool isMoving = false;
+    public bool MovementBlocked { get; set; } = true;
 
     private void Direction(bool forward)
     {

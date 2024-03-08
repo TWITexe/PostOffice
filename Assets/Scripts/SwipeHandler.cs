@@ -15,16 +15,19 @@ public class SwipeHandler : MonoBehaviour
 
     private void HandleSwipe(SwipeDetection.SwipeDirection direction)
     {
-        switch (direction)
+        if (!informationPanel.MovementBlocked)
         {
-            case SwipeDetection.SwipeDirection.Left:
-                informationPanel.BackMove();
-                Debug.Log("left");
-                break;
-            case SwipeDetection.SwipeDirection.Right:
-                informationPanel.NextMove();
-                Debug.Log("right");
-                break;
+            switch (direction)
+            {
+                case SwipeDetection.SwipeDirection.Left:
+                    informationPanel.NextMove();
+                    Debug.Log("left");
+                    break;
+                case SwipeDetection.SwipeDirection.Right:
+                    informationPanel.BackMove();
+                    Debug.Log("right");
+                    break;
+            }
         }
     }
 }
