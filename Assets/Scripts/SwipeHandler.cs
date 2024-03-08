@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SwipeHandler : MonoBehaviour
 {
+    [SerializeField] private MoveInformationPanel informationPanel;
     private void OnEnable()
     {
         SwipeDetection.OnSwipe += HandleSwipe;
@@ -17,10 +18,12 @@ public class SwipeHandler : MonoBehaviour
         switch (direction)
         {
             case SwipeDetection.SwipeDirection.Left:
-                Debug.Log("Swipe Left");
+                informationPanel.BackMove();
+                Debug.Log("left");
                 break;
             case SwipeDetection.SwipeDirection.Right:
-                Debug.Log("Swipe Right");
+                informationPanel.NextMove();
+                Debug.Log("right");
                 break;
         }
     }
