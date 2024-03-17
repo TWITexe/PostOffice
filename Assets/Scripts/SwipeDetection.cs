@@ -43,6 +43,7 @@ public class SwipeDetection : MonoBehaviour
                 // палец был отпущен
                 case TouchPhase.Ended: 
                     fingerUpPosition = touch.position; 
+                    DetectSwipe();
                     break;
             }
         }
