@@ -5,17 +5,23 @@ using System.Collections.Generic;
 
 public class ButtonManager : MonoBehaviour
 {
+    // К ней закреплены все длинные странички для свайпов
+    [SerializeField] private GameObject informationPanel;
+
     [SerializeField] private GameObject homeButton;
     [SerializeField] private GameObject mainScreen;
     [SerializeField] private GameObject secondScreen;
     [SerializeField] private GameObject censorship;
+    [SerializeField] private GameObject censorshipUI;
     [SerializeField] private GameObject frontTriangle;
+    [SerializeField] private GameObject frontTriangleUI;
     [SerializeField] private GameObject letterPath;
+    [SerializeField] private GameObject letterPathUI;
     [SerializeField] private GameObject memory;
     [SerializeField] private GameObject navigationButton;
-    [SerializeField] private GameObject storyPanel;
-    // К ней закреплены все длинные странички для свайпов
-    [SerializeField] private MoveInformationPanel informationPanel;
+    [SerializeField] public GameObject storyPanel;
+    // remake "letterOneMemory"
+    [SerializeField] private GameObject letterOneMemory;
 
     public void StartButton()
     {
@@ -57,12 +63,31 @@ public class ButtonManager : MonoBehaviour
         mainScreen.SetActive(mainScreenActive);
         secondScreen.SetActive(secondScreenActive);
         censorship.SetActive(censorshipActive);
+        censorshipUI.SetActive(censorshipActive);
         frontTriangle.SetActive(frontTriangleActive);
+        frontTriangleUI.SetActive(frontTriangleActive);
         letterPath.SetActive(letterPathActive);
+        letterPathUI.SetActive(letterPathActive);
         memory.SetActive(memoryActive);
         navigationButton.SetActive(navigation);
         storyPanel.SetActive(storyActive);
-        informationPanel.MovementBlocked = moveIsBlock;
+        informationPanel.GetComponent<MoveInformationPanel>().MovementBlocked = moveIsBlock;
+        
+        informationPanel.GetComponent<MoveInformationPanel>().FirstPosition();
+        
+        
+    }
+    
+    public void CloseLetter()
+    {
+        Memory();
+        letterOneMemory.SetActive(false);
+    }
+    public void OpenLetter()
+    {
+        memory.SetActive(false);
+        letterOneMemory.SetActive(true);
+        homeButton.SetActive(false);
     }
     
 }

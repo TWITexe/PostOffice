@@ -22,7 +22,6 @@ public class MoveInformationPanel : MonoBehaviour
             {
                 currentIndex = (currentIndex - 1 + pointTransforms.Length) % pointTransforms.Length;
             }
-
             MoveTo(pointTransforms[currentIndex]);
         }
     }
@@ -46,5 +45,11 @@ public class MoveInformationPanel : MonoBehaviour
         {
             Direction(false);
         }
+    }
+
+    public void FirstPosition()
+    {
+        currentIndex = 0;
+        transform.position = pointTransforms[0].position;
     }
 }
