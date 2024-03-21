@@ -7,7 +7,8 @@ public class ButtonManager : MonoBehaviour
 {
     // К ней закреплены все длинные странички для свайпов
     [SerializeField] private GameObject informationPanel;
-
+    [SerializeField] private GameObject navigationButton;
+    
     [SerializeField] private GameObject homeButton;
     [SerializeField] private GameObject mainScreen;
     [SerializeField] private GameObject secondScreen;
@@ -18,7 +19,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private GameObject letterPath;
     [SerializeField] private GameObject letterPathUI;
     [SerializeField] private GameObject memory;
-    [SerializeField] private GameObject navigationButton;
+    [SerializeField] private GameObject navigationStoryButton;
     [SerializeField] public GameObject storyPanel;
     // remake "letterOneMemory"
     [SerializeField] private GameObject letterOneMemory;
@@ -30,12 +31,12 @@ public class ButtonManager : MonoBehaviour
 
     public void Censorship()
     {
-        SetActiveObjects(true, false, false, true, false, false, false, false, false,false);
+        SetActiveObjects(true, false, false, true, false, false, false, false, true,false);
     }
 
     public void FrontTriangle()
     {
-        SetActiveObjects(true, false, false, false, true, false, false, false, false,false);
+        SetActiveObjects(true, false, false, false, true, false, false, false, true,false);
     }
 
     public void Memory()
@@ -45,7 +46,7 @@ public class ButtonManager : MonoBehaviour
 
     public void LetterPath()
     {
-        SetActiveObjects(true, false, false, false, false, true, false, false, false, false);
+        SetActiveObjects(true, false, false, false, false, true, false, false, true, false);
     }
 
     public void Home()
@@ -55,10 +56,11 @@ public class ButtonManager : MonoBehaviour
 
     public void Story()
     {
-        SetActiveObjects(true, false, false, false, false, false, false, true,true, true);
+        SetActiveObjects(true, false, false, false, false, false, false, true,false, true);
     }
     private void SetActiveObjects(bool homeButtonActive, bool mainScreenActive, bool secondScreenActive, bool censorshipActive, bool frontTriangleActive, bool letterPathActive, bool memoryActive, bool storyActive, bool navigation, bool moveIsBlock)
     {
+        navigationButton.SetActive(navigation);
         homeButton.SetActive(homeButtonActive);
         mainScreen.SetActive(mainScreenActive);
         secondScreen.SetActive(secondScreenActive);
@@ -69,7 +71,7 @@ public class ButtonManager : MonoBehaviour
         letterPath.SetActive(letterPathActive);
         letterPathUI.SetActive(letterPathActive);
         memory.SetActive(memoryActive);
-        navigationButton.SetActive(navigation);
+        navigationStoryButton.SetActive(storyActive);
         storyPanel.SetActive(storyActive);
         informationPanel.GetComponent<MoveInformationPanel>().MovementBlocked = moveIsBlock;
         

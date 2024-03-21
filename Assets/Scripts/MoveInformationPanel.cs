@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MoveInformationPanel : MonoBehaviour
 {
+    [SerializeField] private GameObject NextButton;
+    [SerializeField] private GameObject BackButton;
     [SerializeField] private Transform[] pointTransforms;
     private int currentIndex = 0;
     private float moveDuration = 1.5f;
@@ -29,6 +31,7 @@ public class MoveInformationPanel : MonoBehaviour
     public void MoveTo(Transform pointMove)
     {
         transform.DOMove(pointMove.position, moveDuration).OnComplete(() => isMoving = false);
+        UpdateGameObjectsVisibility();
     }
 
     public void NextMove()
@@ -51,5 +54,11 @@ public class MoveInformationPanel : MonoBehaviour
     {
         currentIndex = 0;
         transform.position = pointTransforms[0].position;
+        UpdateGameObjectsVisibility();
+    }
+    private void UpdateGameObjectsVisibility()
+    {
+        BackButton.SetActive(currentIndex == pointTransforms.Length - 1 || currentIndex > 0);
+        NextButton.SetActive(currentIndex == 0 || currentIndex < pointTransforms.Length - 1);
     }
 }
