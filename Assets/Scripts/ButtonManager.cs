@@ -63,7 +63,7 @@ public class ButtonManager : MonoBehaviour
     public void Story()
     {
         SetActiveObjects(true, false, false, false, false, false, false, true, false, true);
-        //storyContent
+        storyContent.RestartScrollBar();
 
     }
     private void SetActiveObjects(bool homeButtonActive, bool mainScreenActive, bool secondScreenActive, bool censorshipActive, bool frontTriangleActive, bool letterPathActive, bool memoryActive, bool storyActive, bool navigation, bool moveIsBlock)

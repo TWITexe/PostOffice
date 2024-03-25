@@ -24,12 +24,13 @@ public class ObjectScrolling : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.touchCount > 0)
         {
             scrollPos = scrollBar.GetComponent<Scrollbar>().value;
         }
         else
         {
+            Debug.Log("update");
             UpdateScrollBar();
         }
         UpdateObjectScale();
@@ -43,7 +44,7 @@ public class ObjectScrolling : MonoBehaviour
             if (scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
             {
                 scrollBar.GetComponent<Scrollbar>().value =
-                    Mathf.Lerp(scrollBar.GetComponent<Scrollbar>().value, pos[i], 0.25f);
+                    Mathf.Lerp(scrollBar.GetComponent<Scrollbar>().value, pos[i], 0.1f);
             }
         }
     }
@@ -55,14 +56,14 @@ public class ObjectScrolling : MonoBehaviour
             if (scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
             {
                 transform.GetChild(i).localScale =
-                    Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(1f, 1f), 0.3f);
+                    Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(1f, 1f), 0.25f);
                 for (int j = 0; j < pos.Length; j++)
                 {
 
                     if (j != i)
                     {
                         transform.GetChild(j).localScale = Vector2.Lerp(transform.GetChild(i).localScale,
-                            new Vector2(0.5f, 0.5f), 0.3f);
+                            new Vector2(0.5f, 0.5f), 0.25f);
                     }
                 }
             }
@@ -85,5 +86,11 @@ public class ObjectScrolling : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void RestartScrollBar()
+    {
+        scrollBar.GetComponent<Scrollbar>().value = 0;
+        scrollPos = 0;
     }
 }

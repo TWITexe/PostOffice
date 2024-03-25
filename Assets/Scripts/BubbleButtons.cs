@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +13,11 @@ public class BubbleButtons : MonoBehaviour
     private bool isWindowOpen = false;
     private GameObject currentWindow;
 
+    private void Update()
+    {
+        if (Input.touchCount > 0 && isWindowOpen && currentWindow != null)
+           CloseWindow();
+    }
     private void Start()
     {
         for (int i = 0; i < buttons.Length; i++)
@@ -31,16 +38,7 @@ public class BubbleButtons : MonoBehaviour
         if (isWindowOpen)
             CloseWindow();
 
-        OpenWindow(buttonIndex);
-    }
-
-    private void OpenWindow(int windowIndex)
-    {
-        windows[windowIndex].SetActive(true);
-        isWindowOpen = true;
-        currentWindow = windows[windowIndex];
-
-        buttons[windowIndex].image.sprite = pressedSprites[windowIndex];
+        StartCoroutine( OpenWindow(buttonIndex));
     }
 
     private void CloseWindow()
@@ -55,4 +53,14 @@ public class BubbleButtons : MonoBehaviour
 
         currentWindow = null;
     }
+
+    private IEnumerator OpenWindow(int windowIndex)
+    {
+        windows[windowIndex].SetActive(true);
+        currentWindow = windows[windowIndex];
+        buttons[windowIndex].image.sprite = pressedSprites[windowIndex];
+        yield return new WaitForSeconds(0.01f);
+        isWindowOpen = true;
+    }
+
 }

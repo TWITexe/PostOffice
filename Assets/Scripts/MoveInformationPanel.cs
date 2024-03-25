@@ -9,7 +9,8 @@ public class MoveInformationPanel : MonoBehaviour
     [SerializeField] private Transform[] pointTransforms;
     [SerializeField] private Sprite defaultSprite;
     [SerializeField] private Sprite currentIndexSprite;
-    [SerializeField] private GameObject[] idSlides;
+    [SerializeField] private GameObject[] idSlides3;
+    [SerializeField] private GameObject[] idSlides5;
     private int currentIndex = 0;
     private float moveDuration = 1.5f;
     private bool isMoving = false;
@@ -72,15 +73,32 @@ public class MoveInformationPanel : MonoBehaviour
     }
     private void UpdateSlidesSprites()
     {
-        for (int i = 0; i < idSlides.Length; i++)
+        if (maxAllowedMoves < 5)
         {
-            if (i == currentIndex)
+            for (int i = 0; i < idSlides3.Length; i++)
             {
-                SetSprite(idSlides[i], currentIndexSprite);
+                if (i == currentIndex)
+                {
+                    SetSprite(idSlides3[i], currentIndexSprite);
+                }
+                else
+                {
+                    SetSprite(idSlides3[i], defaultSprite);
+                }
             }
-            else
+        }
+        else
+        {
+            for (int i = 0; i < idSlides5.Length; i++)
             {
-                SetSprite(idSlides[i], defaultSprite);
+                if (i == currentIndex)
+                {
+                    SetSprite(idSlides5[i], currentIndexSprite);
+                }
+                else
+                {
+                    SetSprite(idSlides5[i], defaultSprite);
+                }
             }
         }
     }
