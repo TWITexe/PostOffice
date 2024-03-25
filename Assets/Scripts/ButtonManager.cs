@@ -21,6 +21,9 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private GameObject memory;
     [SerializeField] private GameObject navigationStoryButton;
     [SerializeField] public GameObject storyPanel;
+    [SerializeField] public ObjectScrolling storyContent;
+    [SerializeField] public GameObject icoSlide3;
+    [SerializeField] public GameObject icoSlide5;
     // remake "letterOneMemory"
     [SerializeField] private GameObject letterOneMemory;
 
@@ -31,12 +34,14 @@ public class ButtonManager : MonoBehaviour
 
     public void Censorship()
     {
-        SetActiveObjects(true, false, false, true, false, false, false, false, true,false);
+        SetActiveObjects(true, false, false, true, false, false, false, false, true, false);
+        informationPanel.GetComponent<MoveInformationPanel>().maxAllowedMoves = 3;
     }
 
     public void FrontTriangle()
     {
         SetActiveObjects(true, false, false, false, true, false, false, false, true,false);
+        informationPanel.GetComponent<MoveInformationPanel>().maxAllowedMoves = 5;
     }
 
     public void Memory()
@@ -47,6 +52,7 @@ public class ButtonManager : MonoBehaviour
     public void LetterPath()
     {
         SetActiveObjects(true, false, false, false, false, true, false, false, true, false);
+        informationPanel.GetComponent<MoveInformationPanel>().maxAllowedMoves = 3;
     }
 
     public void Home()
@@ -56,7 +62,9 @@ public class ButtonManager : MonoBehaviour
 
     public void Story()
     {
-        SetActiveObjects(true, false, false, false, false, false, false, true,false, true);
+        SetActiveObjects(true, false, false, false, false, false, false, true, false, true);
+        //storyContent
+
     }
     private void SetActiveObjects(bool homeButtonActive, bool mainScreenActive, bool secondScreenActive, bool censorshipActive, bool frontTriangleActive, bool letterPathActive, bool memoryActive, bool storyActive, bool navigation, bool moveIsBlock)
     {
@@ -74,10 +82,15 @@ public class ButtonManager : MonoBehaviour
         navigationStoryButton.SetActive(storyActive);
         storyPanel.SetActive(storyActive);
         informationPanel.GetComponent<MoveInformationPanel>().MovementBlocked = moveIsBlock;
-        
         informationPanel.GetComponent<MoveInformationPanel>().FirstPosition();
         
-        
+        icoSlide5.SetActive(frontTriangleActive);
+        if(censorshipActive || letterPathActive)
+            icoSlide3.SetActive(true);
+        else
+            icoSlide3.SetActive(false);
+
+
     }
     
     public void CloseLetter()

@@ -3,7 +3,7 @@ using UnityEngine;
 public class SwipeHandler : MonoBehaviour
 {
     [SerializeField] private MoveInformationPanel informationPanel;
-    [SerializeField] private GameObject story;
+    //[SerializeField] private GameObject story;
     private void OnEnable()
     {
         SwipeDetection.OnSwipe += HandleSwipe;
@@ -16,7 +16,7 @@ public class SwipeHandler : MonoBehaviour
 
     private void HandleSwipe(SwipeDetection.SwipeDirection direction)
     {
-        if (!informationPanel.MovementBlocked || story.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
+        if (!informationPanel.MovementBlocked /*|| story.GetComponent<ButtonManager>().storyPanel.activeSelf == true*/)
         {
             switch (direction)
             {
@@ -38,11 +38,11 @@ public class SwipeHandler : MonoBehaviour
         {
             informationPanel.NextMove();
         }
-        if (story.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
+        /*if (story.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
         {
             
             story.GetComponent<StorySwap>().NextStory();
-        }
+        }*/
     }
     private void SwipeActionRight()
     {
@@ -50,10 +50,10 @@ public class SwipeHandler : MonoBehaviour
         {
             informationPanel.BackMove();
         }
-        if (story.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
+        /*if (story.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
         {
             
             story.GetComponent<StorySwap>().BackStory();
-        }
+        }*/
     }
 }
