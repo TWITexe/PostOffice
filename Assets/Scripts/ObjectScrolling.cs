@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public class ObjectScrolling : MonoBehaviour
 {
-    [SerializeField] private GameObject scrollBar;
+    [SerializeField] public GameObject scrollBar;
     [SerializeField] private Sprite defaultSprite;
     [SerializeField] private Sprite activeSprite;
 
-    private float scrollPos = 0;
+    public float scrollPos = 0;
     public float[] pos;
     public float distance;
     [SerializeField] private GameObject[] StoryID;
@@ -30,14 +30,13 @@ public class ObjectScrolling : MonoBehaviour
         }
         else
         {
-            Debug.Log("update");
             UpdateScrollBar();
         }
         UpdateObjectScale();
         UpdateObjectSprites();
     }
 
-    void UpdateScrollBar()
+    public void UpdateScrollBar()
     {
         for (int i = 0; i < pos.Length; i++)
         {
