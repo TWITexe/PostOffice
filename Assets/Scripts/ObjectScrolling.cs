@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,9 @@ public class ObjectScrolling : MonoBehaviour
     public float distance;
     [SerializeField] private GameObject[] StoryID;
 
+    // Флаг для отслеживания процесса перемещения ScrollView
+    private bool isScrolling = false; 
+
     void Start()
     {
         pos = new float[transform.childCount];
@@ -24,7 +28,7 @@ public class ObjectScrolling : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0) || Input.touchCount > 0)
+        if (!isScrolling && (Input.GetMouseButton(0) || Input.touchCount > 0))
         {
             scrollPos = scrollBar.GetComponent<Scrollbar>().value;
         }
@@ -40,7 +44,7 @@ public class ObjectScrolling : MonoBehaviour
     {
         for (int i = 0; i < pos.Length; i++)
         {
-            if (scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
+            if (!isScrolling && scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
             {
                 scrollBar.GetComponent<Scrollbar>().value =
                     Mathf.Lerp(scrollBar.GetComponent<Scrollbar>().value, pos[i], 0.1f);
@@ -52,19 +56,15 @@ public class ObjectScrolling : MonoBehaviour
     {
         for (int i = 0; i < pos.Length; i++)
         {
-            if (scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
+            if (!isScrolling && scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
             {
                 transform.GetChild(i).localScale =
                     Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(1f, 1f), 0.25f);
-                for (int j = 0; j < pos.Length; j++)
-                {
-
-                    if (j != i)
-                    {
-                        transform.GetChild(j).localScale = Vector2.Lerp(transform.GetChild(i).localScale,
-                            new Vector2(0.5f, 0.5f), 0.25f);
-                    }
-                }
+            }
+            else
+            {
+                transform.GetChild(i).localScale =
+                    Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(0.8f, 0.8f), 0.25f);
             }
         }
     }
@@ -73,7 +73,7 @@ public class ObjectScrolling : MonoBehaviour
     {
         for (int i = 0; i < pos.Length; i++)
         {
-            if (scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
+            if (!isScrolling && scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
             {
                 // Устанавливаем активный спрайт выбранному объекту
                 StoryID[i].GetComponent<Image>().sprite = activeSprite;
@@ -91,5 +91,32 @@ public class ObjectScrolling : MonoBehaviour
     {
         scrollBar.GetComponent<Scrollbar>().value = 0;
         scrollPos = 0;
+    }
+
+    public void MoveToStory(float position, float smoothSpeed)
+    {
+        if (isScrolling) return;
+        // Уфлаг в true перед началом перемещения
+        isScrolling = true; 
+
+        float targetValue = Mathf.Clamp01(position);
+        StartCoroutine(SmoothScrolling(targetValue, smoothSpeed));
+        // Обновляю значение scrollPos
+        scrollPos = position; 
+    }
+
+    private IEnumerator SmoothScrolling(float targetValue, float smoothSpeed)
+    {
+        float currentValue = scrollBar.GetComponent<Scrollbar>().value;
+
+        while (Mathf.Abs(currentValue - targetValue) > 0.01f)
+        {
+            currentValue = Mathf.Lerp(currentValue, targetValue, smoothSpeed * Time.deltaTime);
+            scrollBar.GetComponent<Scrollbar>().value = currentValue;
+            yield return null;
+        }
+
+        // флаг в false после завершения перемещения
+        isScrolling = false; 
     }
 }
