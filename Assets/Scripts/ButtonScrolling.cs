@@ -9,5 +9,6 @@ public class ButtonScrolling : MonoBehaviour
         float buttonPosition = transform.GetSiblingIndex() / (float)(transform.parent.childCount - 1);
         ObjectScrolling scrollView = transform.parent.GetComponent<ObjectScrolling>();
         scrollView.MoveToStory(buttonPosition, smoothSpeed);
+        Debug.Log(buttonPosition);
     }
 }

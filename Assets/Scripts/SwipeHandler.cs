@@ -3,7 +3,9 @@ using UnityEngine;
 public class SwipeHandler : MonoBehaviour
 {
     [SerializeField] private MoveInformationPanel informationPanel;
-    //[SerializeField] private GameObject story;
+    [SerializeField] private GameObject story;
+    [SerializeField] private GameObject letters;
+    [SerializeField] private ButtonManager panelBank;
     private void OnEnable()
     {
         SwipeDetection.OnSwipe += HandleSwipe;
@@ -13,10 +15,12 @@ public class SwipeHandler : MonoBehaviour
     {
         SwipeDetection.OnSwipe -= HandleSwipe;
     }
-
+ 
     private void HandleSwipe(SwipeDetection.SwipeDirection direction)
     {
-        if (!informationPanel.MovementBlocked /*|| story.GetComponent<ButtonManager>().storyPanel.activeSelf == true*/)
+        if (!informationPanel.MovementBlocked || 
+            panelBank.GetComponent<ButtonManager>().storyPanel.activeSelf == true ||
+            panelBank.GetComponent<ButtonManager>().memory.activeSelf == true)
         {
             switch (direction)
             {
@@ -38,11 +42,15 @@ public class SwipeHandler : MonoBehaviour
         {
             informationPanel.NextMove();
         }
-        /*if (story.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
+        if (panelBank.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
         {
             
-            story.GetComponent<StorySwap>().NextStory();
-        }*/
+            story.GetComponent<StorySwapButton>().NextStory();
+        }
+        if (panelBank.GetComponent<ButtonManager>().memory.activeSelf == true && panelBank.GetComponent<ButtonManager>().letterMemory.activeSelf == false)
+        {
+            letters.GetComponent<StorySwapButton>().NextStory();
+        }
     }
     private void SwipeActionRight()
     {
@@ -50,10 +58,13 @@ public class SwipeHandler : MonoBehaviour
         {
             informationPanel.BackMove();
         }
-        /*if (story.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
+        if (panelBank.GetComponent<ButtonManager>().storyPanel.activeSelf == true)
         {
-            
-            story.GetComponent<StorySwap>().BackStory();
-        }*/
+            story.GetComponent<StorySwapButton>().BackStory();
+        }
+        if (panelBank.GetComponent<ButtonManager>().memory.activeSelf == true && panelBank.GetComponent<ButtonManager>().letterMemory.activeSelf == false)
+        {
+            letters.GetComponent<StorySwapButton>().BackStory();
+        }
     }
 }

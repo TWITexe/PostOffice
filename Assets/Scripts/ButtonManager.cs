@@ -8,6 +8,9 @@ public class ButtonManager : MonoBehaviour
     // К ней закреплены все длинные странички для свайпов
     [SerializeField] private GameObject informationPanel;
     [SerializeField] private GameObject navigationButton;
+    [SerializeField] private ObjectScrolling objectMemoryScrolling;
+    [SerializeField] public ObjectScrolling storyContent;
+    [SerializeField] public ObjectScrolling memoryContent;
     
     [SerializeField] private GameObject homeButton;
     [SerializeField] private GameObject mainScreen;
@@ -18,14 +21,13 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private GameObject frontTriangleUI;
     [SerializeField] private GameObject letterPath;
     [SerializeField] private GameObject letterPathUI;
-    [SerializeField] private GameObject memory;
+    [SerializeField] public GameObject memory;
     [SerializeField] private GameObject navigationStoryButton;
     [SerializeField] public GameObject storyPanel;
-    [SerializeField] public ObjectScrolling storyContent;
     [SerializeField] public GameObject icoSlide3;
     [SerializeField] public GameObject icoSlide5;
     // remake "letterOneMemory"
-    [SerializeField] private GameObject letterOneMemory;
+    [SerializeField] public GameObject letterMemory;
 
     public void StartButton()
     {
@@ -47,6 +49,7 @@ public class ButtonManager : MonoBehaviour
     public void Memory()
     {
         SetActiveObjects(true, false, false, false, false, false, true, false,false,true);
+        memoryContent.RestartScrollBar();
     }
 
     public void LetterPath()
@@ -93,16 +96,20 @@ public class ButtonManager : MonoBehaviour
 
     }
     
-    public void CloseLetter()
+    public void CloseLetter(GameObject OpenLetter)
     {
-        Memory();
-        letterOneMemory.SetActive(false);
+        letterMemory.SetActive(false);
+        OpenLetter.SetActive(false);
+        homeButton.SetActive(true);
     }
-    public void OpenLetter()
+    public void OpenLetter(GameObject OpenLetter)
     {
-        memory.SetActive(false);
-        letterOneMemory.SetActive(true);
-        homeButton.SetActive(false);
+        if (objectMemoryScrolling.isScrolling == false)
+        {
+            letterMemory.SetActive(true);
+            OpenLetter.SetActive(true);
+            homeButton.SetActive(false);
+        }
     }
     
 }

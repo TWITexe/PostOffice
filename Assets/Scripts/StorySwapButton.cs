@@ -13,27 +13,27 @@ public class StorySwapButton : MonoBehaviour
     {
         objectScrolling = gameObject.GetComponent<ObjectScrolling>();
     }
+
     public void NextStory()
     {
         Debug.Log("nextStory");
-        if (objectScrolling.scrollPos < 1)
+        int currentIndex = objectScrolling.GetCurrentIndex();
+        if (objectScrolling.scrollBar.GetComponent<Scrollbar>().value < 1)
         {
-            objectScrolling.scrollBar.GetComponent<Scrollbar>().value += 0.20f;
-            objectScrolling.scrollPos++;
+            float targetPos = objectScrolling.pos[currentIndex + 1];
+            objectScrolling.MoveToStory(targetPos,objectScrolling.smoothSpeed);
         }
-
-        objectScrolling.UpdateScrollBar();
     }
-
     public void BackStory()
     {
         Debug.Log("backStory");
-        if (objectScrolling.scrollPos > 0)
+        int currentIndex = objectScrolling.GetCurrentIndex();
+        if (objectScrolling.scrollBar.GetComponent<Scrollbar>().value > 0)
         {
-            objectScrolling.scrollBar.GetComponent<Scrollbar>().value -= 0.20f;
-            objectScrolling.scrollPos--;
+            float targetPos = objectScrolling.pos[currentIndex - 1];
+            objectScrolling.MoveToStory(targetPos,objectScrolling.smoothSpeed);
         }
-        objectScrolling.UpdateScrollBar();
     }
+
     
 }

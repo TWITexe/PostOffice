@@ -4,17 +4,27 @@ using UnityEngine.UI;
 
 public class ObjectScrolling : MonoBehaviour
 {
-    [SerializeField] public GameObject scrollBar;
+    public GameObject scrollBar;
     [SerializeField] private Sprite defaultSprite;
     [SerializeField] private Sprite activeSprite;
-
+    [SerializeField] private float normalSizeScaling = 1f;
+    [SerializeField] private float minSizeScaling = 0.8f;
+    [SerializeField] private float scrollingThresholdMultiplier = 1f;
+    // Порог скорости скролла, при котором скролл считается движущимся достаточно быстро
+    [SerializeField] private float fastScrollSpeedThreshold = 0.5f; 
+    // Минимальное расстояние для автоматического доведения скролла, независимо от скорости
+    [SerializeField] private float minScrollDistance = 0.05f; 
+    // Последнее положение скролла для вычисления скорости
+    private float lastScrollPos; 
+    
+    public float smoothSpeed = 0.1f;
     public float scrollPos = 0;
     public float[] pos;
     public float distance;
     [SerializeField] private GameObject[] StoryID;
 
     // Флаг для отслеживания процесса перемещения ScrollView
-    private bool isScrolling = false; 
+    public bool isScrolling = false; 
 
     void Start()
     {
@@ -38,6 +48,9 @@ public class ObjectScrolling : MonoBehaviour
         }
         UpdateObjectScale();
         UpdateObjectSprites();
+        
+        // Обновление lastScrollPos при каждом обновлении
+        lastScrollPos = scrollBar.GetComponent<Scrollbar>().value;
     }
 
     public void UpdateScrollBar()
@@ -51,6 +64,8 @@ public class ObjectScrolling : MonoBehaviour
             }
         }
     }
+    
+    
 
     void UpdateObjectScale()
     {
@@ -59,12 +74,12 @@ public class ObjectScrolling : MonoBehaviour
             if (!isScrolling && scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
             {
                 transform.GetChild(i).localScale =
-                    Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(1f, 1f), 0.25f);
+                    Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(normalSizeScaling, normalSizeScaling), 0.20f);
             }
             else
             {
                 transform.GetChild(i).localScale =
-                    Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(0.8f, 0.8f), 0.25f);
+                    Vector2.Lerp(transform.GetChild(i).localScale, new Vector2(minSizeScaling, minSizeScaling), 0.20f);
             }
         }
     }
@@ -96,7 +111,7 @@ public class ObjectScrolling : MonoBehaviour
     public void MoveToStory(float position, float smoothSpeed)
     {
         if (isScrolling) return;
-        // Уфлаг в true перед началом перемещения
+        // флаг в true перед началом перемещения
         isScrolling = true; 
 
         float targetValue = Mathf.Clamp01(position);
@@ -105,7 +120,7 @@ public class ObjectScrolling : MonoBehaviour
         scrollPos = position; 
     }
 
-    private IEnumerator SmoothScrolling(float targetValue, float smoothSpeed)
+    public IEnumerator SmoothScrolling(float targetValue, float smoothSpeed)
     {
         float currentValue = scrollBar.GetComponent<Scrollbar>().value;
 
@@ -116,7 +131,19 @@ public class ObjectScrolling : MonoBehaviour
             yield return null;
         }
 
+        UpdateObjectSprites();
         // флаг в false после завершения перемещения
         isScrolling = false; 
+    }
+    public int GetCurrentIndex()
+    {
+        for (int i = 0; i < pos.Length; i++)
+        {
+            if (scrollPos < pos[i] + (distance / 2) && scrollPos > pos[i] - (distance / 2))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
