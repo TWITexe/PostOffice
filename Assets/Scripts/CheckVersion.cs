@@ -26,7 +26,8 @@ public class CheckVersion : MonoBehaviour
     public string FtpLogin; //fabrica
     public string FtpPassword; //fabrica@2024
 
-    public Text txtLoading; //текст со статусом загрузки
+    [SerializeField] private Text txtLoading; // текст со статусом загрузки
+    [SerializeField] private Text txtError; // текст с ошибками
     private void Start()
     {
         StartCoroutine(GetRequest());
@@ -42,6 +43,7 @@ public class CheckVersion : MonoBehaviour
         if (uwr.isNetworkError)
         {
             UnityEngine.Debug.Log("Error While Sending: " + uwr.error);
+            txtError.text = "Error While Sending: " + uwr.error;
         }
         else
         {
