@@ -7,10 +7,12 @@ public class ButtonManager : MonoBehaviour
 {
     // К ней закреплены все длинные странички для свайпов
     [SerializeField] private GameObject informationPanel;
+    
     [SerializeField] private GameObject navigationButton;
     [SerializeField] private ObjectScrolling objectMemoryScrolling;
     [SerializeField] public ObjectScrolling storyContent;
     [SerializeField] public ObjectScrolling memoryContent;
+    
     
     [SerializeField] private GameObject homeButton;
     [SerializeField] private GameObject mainScreen;
@@ -60,6 +62,7 @@ public class ButtonManager : MonoBehaviour
 
     public void Home()
     {
+        if (storyContent.isScrolling == false && memoryContent.isScrolling == false)
         SetActiveObjects(false, true, false, false, false, false, false, false, false,true);
     }
 

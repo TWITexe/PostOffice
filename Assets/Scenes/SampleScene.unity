@@ -4068,6 +4068,7 @@ GameObject:
   - component: {fileID: 585149069}
   - component: {fileID: 585149068}
   - component: {fileID: 585149070}
+  - component: {fileID: 585149071}
   m_Layer: 0
   m_Name: PanelBank
   m_TagString: Untagged
@@ -4128,18 +4129,37 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585149067}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a5dface5aac1964b865214d9cfdbbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AppName: Post
-  LinkToJson: https://pastebin.com/raw/5DRzBJHp
-  FtpAddress: 
+  LinkToJson: 
+  FtpAddress: 95.188.79.124:2165
   FtpLogin: fabrica
   FtpPassword: fabrica@2024
+  NameApkFile: 
+  DownloadPath: 
+  AppVersion: 0
   txtLoading: {fileID: 985766228}
-  txtError: {fileID: 754900494}
+--- !u!114 &585149071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585149067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8970a47a4184944af2666aefb66583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IP_Sender: 
+  IP_Recipient: 192.168.0.240
+  Key: test_key
+  _time: 0
+  _maxTime: 60
 --- !u!1 &605420907
 GameObject:
   m_ObjectHideFlags: 0
@@ -6743,7 +6763,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &985766228
 MonoBehaviour:
   m_ObjectHideFlags: 0
