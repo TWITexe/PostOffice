@@ -4136,13 +4136,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppName: Post
   LinkToJson: 
-  FtpAddress: 95.188.79.124:2165
+  FtpAddress: 192.168.0.159
   FtpLogin: fabrica
   FtpPassword: fabrica@2024
   NameApkFile: 
   DownloadPath: 
   AppVersion: 0
   txtLoading: {fileID: 985766228}
+  IsNeedDownload: 0
 --- !u!114 &585149071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6763,7 +6764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &985766228
 MonoBehaviour:
   m_ObjectHideFlags: 0

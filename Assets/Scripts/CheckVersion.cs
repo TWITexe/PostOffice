@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-
-//using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -33,9 +31,11 @@ public class CheckVersion : MonoBehaviour
     public float AppVersion;
 
     public Text txtLoading; //текст со статусом загрузки
+    public bool IsNeedDownload;
     private void Start()
     {
         //StartCoroutine(GetRequest());
+        txtLoading.gameObject.SetActive(false);
         CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
         ci.NumberFormat.CurrencyDecimalSeparator = ".";
 
@@ -44,13 +44,16 @@ public class CheckVersion : MonoBehaviour
         DownloadPath = Application.persistentDataPath;
         DownloadPath = Path.Combine(DownloadPath, $"{AppName}.apk");
 
+        txtLoading.text = AppVersion.ToString();
+        txtLoading.text = DownloadPath;
+
         GetDirList();
     }
     public void GetDirList()
     {
         NetworkCredential networkCredential = new NetworkCredential(FtpLogin, FtpPassword);
-        string p = "ftp://95.188.79.124:2165/apk" + "/";
-        FtpWebRequest ftpWebRequest = WebRequest.Create(new Uri(p)) as FtpWebRequest;
+        string p = $"ftp://{FtpAddress}/apk" + "/";
+        FtpWebRequest ftpWebRequest = (FtpWebRequest)WebRequest.Create(p);
         if (ftpWebRequest == null)
         {
             return;
@@ -71,7 +74,6 @@ public class CheckVersion : MonoBehaviour
         {
             return;
         }
-
         List<string> res = new List<string>();
         using (StreamReader sr = new StreamReader(s))
         {
@@ -82,7 +84,7 @@ public class CheckVersion : MonoBehaviour
                 if (str.Contains(AppName + "_"))
                 {
                     NameApkFile = str;
-                    string l = "ftp://95.188.79.124:2165/apk" + "/" + NameApkFile;
+                    string l = $"ftp://{FtpAddress}/apk" + "/" + NameApkFile;
 
                     CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
                     ci.NumberFormat.CurrencyDecimalSeparator = ".";
@@ -104,126 +106,15 @@ public class CheckVersion : MonoBehaviour
         s.Close();
         ftpWebResponse.Close();
     }
-    /*public async void GetDirList(string dirName, Action<List<string>> action = null)
-    {
-        // Remember to add '/' behind the folder name
-        // Remember to add '/' behind the folder name
-        // Remember to add '/' behind the folder name
-        await Task.Run(() =>
-        {
-            try
-            {
-                NetworkCredential networkCredential = new NetworkCredential(FtpLogin, FtpPassword);
-                string p = FtpURL + dirName "ftp://95.188.79.124:2165/apk" + "/";
-                FtpWebRequest ftpWebRequest = WebRequest.Create(new Uri(p)) as FtpWebRequest;
-                if (ftpWebRequest == null)
-                {
-                    action?.Invoke(null);
-                    return;
-                }
-                ftpWebRequest.Credentials = networkCredential;
-                ftpWebRequest.Proxy = null;
-                ftpWebRequest.Method = WebRequestMethods.Ftp.ListDirectory;
-                ftpWebRequest.KeepAlive = false;
-                ftpWebRequest.UseBinary = true;
-
-                FtpWebResponse ftpWebResponse = ftpWebRequest.GetResponse() as FtpWebResponse;
-                if (ftpWebResponse == null)
-                {
-                    action?.Invoke(null);
-                    return;
-                }
-                Stream s = ftpWebResponse.GetResponseStream();
-                if (s == null)
-                {
-                    action?.Invoke(null);
-                    return;
-                }
-
-                List<string> res = new List<string>();
-                using (StreamReader sr = new StreamReader(s))
-                {
-                    string str = sr.ReadLine();
-                    while (str != null)
-                    {
-                        res.Add(str);
-                        if (str.Contains(AppName+"_"))
-                        {
-                            NameApkFile = str;
-                            string l = "ftp://95.188.79.124:2165/apk" + "/" + NameApkFile;
-
-                            CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-                            ci.NumberFormat.CurrencyDecimalSeparator = ".";
-                            float v = float.Parse(NameApkFile.Substring(NameApkFile.IndexOf('_') + 1, NameApkFile.IndexOf('.') - (NameApkFile.IndexOf('_') + 1)).Replace('-', '.'), NumberStyles.Any, ci);
-
-                            Debug.Log(v);
-                            if (v > AppVersion)
-                            {
-                                DownloadApk(l,v);
-                                return;
-                            }
-
-                            break;
-                        }
-                        Debug.Log(str);
-                        str = sr.ReadLine();
-                    }
-                }
-                s.Close();
-                action?.Invoke(res);
-                ftpWebResponse.Close();
-            }
-            catch (Exception e)
-            {
-                action?.Invoke(null);
-                Debug.Log("Obtaining the file list failed:" + e);
-            }
-        });
-    }*/
     public IEnumerator DownloadApk(string l, float v)
     {
+        IsNeedDownload = true;
         txtLoading.gameObject.SetActive(true);
         txtLoading.text = $"Скачивается обновление (v{v})";
 
         yield return new WaitForSeconds(1f);
 
         downloadWithFTP(l, DownloadPath, FtpLogin, FtpPassword);
-    }
-    /// <summary>
-    /// Проверка новой версии с сервера
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator GetRequest()
-    {
-        UnityWebRequest uwr = UnityWebRequest.Get(LinkToJson);
-        yield return uwr.SendWebRequest();
-        if (uwr.isNetworkError)
-        {
-            UnityEngine.Debug.Log("Error While Sending: " + uwr.error);
-        }
-        else
-        {
-            GetdataOutput all_data = (GetdataOutput)JsonUtility.FromJson(uwr.downloadHandler.text, typeof(GetdataOutput));
-            if (float.Parse(all_data.version) > float.Parse(Application.version))
-            {
-                txtLoading.gameObject.SetActive(true);
-                txtLoading.text = $"Скачивается обновление (v{all_data.version})";
-
-                yield return new WaitForSeconds(1);
-
-                //Скачивание файла с FTP сервера
-                string path = Application.persistentDataPath;
-                path = Path.Combine(path, $"{AppName}.apk");
-                if(string.IsNullOrEmpty(all_data.link))
-                    downloadWithFTP($"ftp://{FtpAddress}/apk/{AppName}.apk", path, FtpLogin, FtpPassword);
-                else
-                    downloadWithFTP(all_data.link, path, FtpLogin, FtpPassword);
-
-                //Если понадобится подключение без логина и пароля
-                //downloadWithFTP($"ftp://{FtpAddress}/apk/{AppName}.apk", path);
-                //downloadWithFTP(all_data.link, path);
-            }
-        }
     }
     private byte[] downloadWithFTP(string ftpUrl, string savePath = "", string userName = "", string password = "")
     {
@@ -295,6 +186,13 @@ public class CheckVersion : MonoBehaviour
         InstallApp(Application.persistentDataPath + $"/{AppName}.apk");
 
         fileStream.Close();
+    }
+    public void CheckAppDownload() 
+    {
+        if (IsNeedDownload)
+        {
+            InstallApp(Application.persistentDataPath + $"/{AppName}.apk");
+        }
     }
     /// <summary>
     /// Установка приложения из APK файла на устройство
